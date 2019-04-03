@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>m_comeo.png</file>
+        <file>rotateright.png</file>
+        <file>app_iconc.ico</file>
+        <file>app_icon.png</file>
+    </qresource>
+</RCC>

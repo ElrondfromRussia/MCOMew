@@ -15,6 +15,7 @@
 #include <QSettings>
 #include <QDir>
 #include <QDebug>
+#include <QListWidget>
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +32,8 @@ class MainWindow : public QLabel
     QVBoxLayout *bxlay;
     QTimer mtimer;
     QSystemTrayIcon* trayIcon;
+    QListWidget* mlist;
+    QHBoxLayout* butlay;
 
 public slots:
     void on_update();

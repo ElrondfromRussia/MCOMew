@@ -4,5 +4,6 @@
         <file>rotateright.png</file>
         <file>app_iconc.ico</file>
         <file>app_icon.png</file>
+        <file>exit.png</file>
     </qresource>
 </RCC>

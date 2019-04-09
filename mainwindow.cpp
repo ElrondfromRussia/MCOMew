@@ -8,9 +8,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QPixmap pix(":/m_comeo.png");
     setPixmap(pix);
 
+    setFixedSize(pix.size());
     setWindowIcon(QIcon(":/app_icon.png"));
 
-    quitbtn= new QPushButton("X");
+    quitbtn= new QPushButton("");
+    quitbtn->setIcon(QIcon(":/exit.png"));
     quitbtn->setFixedSize(20,20);
     QObject::connect(quitbtn, SIGNAL(clicked()), this, SLOT(hide()));
 
@@ -19,22 +21,26 @@ MainWindow::MainWindow(QWidget *parent) :
     update->setFixedSize(20,20);
     QObject::connect(update, SIGNAL(clicked()), this, SLOT(on_update()));
 
-    cbports = new QComboBox();
-    cbports->setFixedSize(78,20);
+    butlay = new QHBoxLayout();
+    butlay->setMargin(0);
+    butlay->setSpacing(5);
+    butlay->addWidget(quitbtn);
+    butlay->addWidget(update);
+
+    mlist = new QListWidget(this);
+    mlist->setFixedSize(116,156);
+    mlist->setSelectionMode(QAbstractItemView::NoSelection);
+    mlist->setFont(QFont("Times", 12, 1));
     fill_cb();
 
-    bxulay = new QHBoxLayout();
-    bxulay->addWidget(cbports);
-    bxulay->addWidget(update);
-    bxulay->setSpacing(1);
-
     bxlay = new QVBoxLayout();
-    bxlay->addWidget(quitbtn);
-    bxlay->addLayout(bxulay);
-    bxlay->addStretch(2);
-    bxlay->setSpacing(9);
+    bxlay->addLayout(butlay);
+    bxlay->addWidget(mlist);
+    bxlay->setSpacing(0);
+    bxlay->setMargin(12);
 
     setLayout(bxlay);
+    bxlay->setGeometry(QRect(0,0, pix.size().width(), pix.size().height()));
 
     mtimer.setInterval(1000);
     connect(&mtimer, &QTimer::timeout, this, &MainWindow::timerMainShot);
@@ -66,11 +72,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::fill_cb()
 {
-    cbports->clear();
-    cbports->addItem("Откройся!");
+    mlist->clear();
+    QStringList list;
 
     foreach (const QSerialPortInfo &info, QSerialPortInfo::availablePorts())
-        cbports->addItem(info.portName());
+        list.append(info.portName());
+    mlist->insertItems(0, list);
+    mlist->sortItems();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
